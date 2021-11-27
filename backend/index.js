@@ -22,6 +22,7 @@ app.use(cors());
 app.use(morgan("common"));
 
 app.use("/api/auth", userRoutes);
+app.use("/api/docs", documentRoutes);
 
 app.listen(PORT, () => {
   console.log("App running on http://localhost:5000/");
