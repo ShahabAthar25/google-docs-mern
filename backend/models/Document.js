@@ -8,21 +8,16 @@ const userSchema = mongoose.Schema({
     max: 60,
     unique: true,
   },
-  email: {
+  userId: {
     type: String,
     require: true,
     min: 3,
     max: 100,
     unique: true,
   },
-  password: {
+  content: {
     type: String,
     require: true,
-    min: 8,
-  },
-  profilePic: {
-    type: String,
-    default: "",
   },
 });
 
