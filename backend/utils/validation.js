@@ -18,3 +18,11 @@ module.exports.loginValidation = (data) => {
 
   return schema.validate(data);
 };
+
+module.exports.documentValidation = (data) => {
+  const schema = Joi.object({
+    name: Joi.string().required().min(6).max(60),
+  });
+
+  return schema.validate(data);
+};
