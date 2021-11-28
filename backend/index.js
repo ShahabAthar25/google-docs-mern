@@ -4,8 +4,9 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
 
-const userRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth");
 const documentRoutes = require("./routes/document");
+const userRoutes = require("./routes/users");
 
 dotenv.config();
 
@@ -21,8 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("common"));
 
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {
   console.log("App running on http://localhost:5000/");
