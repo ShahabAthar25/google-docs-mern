@@ -17,7 +17,10 @@ export default function Header() {
         <h1 className="text-gray-700 text-2xl hidden md:flex">Docs</h1>
       </div>
       <div className="flex items-center flex-grow bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md">
-        <Button className="rounded-full">
+        <Button
+          className="rounded-full mx-2 sm:mx-4"
+          style={{ minWidth: "12px" }}
+        >
           <SearchIcon className="h-8 text-gray-600" />
         </Button>
         <input
