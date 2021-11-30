@@ -1,9 +1,9 @@
 import { MenuIcon, SearchIcon } from "@heroicons/react/solid";
 import { Button } from "@mui/material";
 
-export default function Header() {
+export default function Header({ token }) {
   return (
-    <div className="sticky top-0 px-4 py-2 bg-white shadow-md flex items-center">
+    <div className="sticky top-0 z-50 px-4 py-2 bg-white shadow-md flex items-center">
       <div className="flex items-center space-x-3">
         <Button className="cursor-pointer hidden sm:flex">
           <MenuIcon className="h-8 text-gray-600" />
@@ -39,3 +39,11 @@ export default function Header() {
     </div>
   );
 }
+
+const getInitailProps = (context) => {
+  return {
+    props: {
+      token: context.req.cookies.token || "",
+    },
+  };
+};
