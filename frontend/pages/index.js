@@ -1,14 +1,14 @@
 import Header from "../components/Header";
 import { Button } from "@mui/material";
+import { DotsVerticalIcon } from "@heroicons/react/solid";
 import {
-  DotsVerticalIcon,
   FolderIcon,
   SortAscendingIcon,
   ServerIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/outline";
 import Card from "../components/Card";
 
-export default function Home() {
+export default function Home({ token }) {
   return (
     <div className="pb-8">
       <Header />
@@ -68,3 +68,11 @@ export default function Home() {
     </div>
   );
 }
+
+const getInitailProps = (context) => {
+  return {
+    props: {
+      token: context.req.cookies.token || "",
+    },
+  };
+};
