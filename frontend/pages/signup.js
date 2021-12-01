@@ -4,15 +4,17 @@ import { Button } from "@mui/material";
 import cookie from "js-cookie";
 
 export default function login() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:5000/api/auth/login`, {
+    const res = await fetch(`http://localhost:5000/api/auth/register`, {
       method: "POST",
       body: JSON.stringify({
+        username,
         email,
         password,
       }),
@@ -23,13 +25,18 @@ export default function login() {
 
     const data = await res.json();
 
-    cookie.set("token", data.token);
-
-    router.push("/");
+    router.push("/login");
   };
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gray-100 flex-col">
       <form className="flex flex-col space-y-8">
+        <input
+          type="text"
+          placeholder="Username"
+          className="p-4 outline-none border-b-2 rounded-lg focus-within:shadow-md"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <input
           type="text"
           placeholder="Email"
@@ -50,13 +57,13 @@ export default function login() {
           className="bg-blue-600 hover:bg-blue-700 hover:shadow-lg"
           onClick={handleSubmit}
         >
-          LogIn
+          Signup
         </Button>
       </form>
       <p className="text-sm text-gray-600 py-6">
-        Don't have an account?{" "}
-        <a href="/signup" className="text-blue-700 underline">
-          Signup
+        Already have an account?{" "}
+        <a href="/login" className="text-blue-700 underline">
+          Login
         </a>
       </p>
     </div>
