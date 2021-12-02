@@ -4,10 +4,14 @@ import {
   AnnotationIcon,
 } from "@heroicons/react/outline";
 import { Button } from "@mui/material";
+import Head from "next/head";
 
 export default function index() {
   return (
     <div>
+      <Head>
+        <title>Untitled - Google Docs Clone</title>
+      </Head>
       <header className="w-screen bg-white border p-2 flex justify-between items-center">
         <div className="flex">
           <div className="mr-4">
