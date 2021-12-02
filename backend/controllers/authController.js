@@ -11,6 +11,14 @@ const register = async (req, res) => {
   if (error) return res.status(400).send({ message: error });
 
   try {
+    const userExist = await User.findOne({ username: req.body.username });
+    if (userExist)
+      return res.status(400).send({ message: "Username already exists" });
+
+    const emailExist = await User.findOne({ email: req.body.email });
+    if (emailExist)
+      return res.status(400).send({ message: "Email already exists" });
+
     // genrate hashed password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);

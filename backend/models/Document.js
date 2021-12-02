@@ -7,12 +7,6 @@ const documentSchema = mongoose.Schema({
     min: 3,
     max: 60,
   },
-  username: {
-    type: String,
-    require: true,
-    min: 3,
-    max: 60,
-  },
   userId: {
     type: String,
     require: true,

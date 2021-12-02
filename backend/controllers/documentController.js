@@ -7,24 +7,20 @@ const getOneDocuments = async (req, res) => {
     if (req.user._id === document.userId) {
       res.send(document);
     } else {
-      res.send(400).send({ message: "You are not the owner of this doc" });
+      res.status(400).send({ message: "You are not the owner of this doc" });
     }
   } catch (err) {
-    res.status(500).send({ messgae: err });
+    res.status(500).send({ message: err });
   }
 };
 
 // Getting user documents
 const getUserDocuments = async (req, res) => {
   try {
-    const document = await Document.find({ userId: req.params.id });
-    if (req.user._id === document.userId) {
-      res.send(document);
-    } else {
-      res.send(400).send({ message: "You are not the owner of this account" });
-    }
+    const document = await Document.find({ userId: req.user._id });
+    res.send(document);
   } catch (err) {
-    res.status(500).send({ messgae: err });
+    res.status(500).send({ message: err });
   }
 };
 
@@ -55,7 +51,7 @@ const updateDocument = async (req, res) => {
 
     if (document.userId === req.user._id) {
       const documents = await document.updateOne({
-        $set: { name: req.body.name },
+        $set: { name: req.body.name, content: req.bodycontent },
       });
       res.send({ message: "Document Updated" });
     } else {
