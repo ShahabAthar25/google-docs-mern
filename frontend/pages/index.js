@@ -11,7 +11,6 @@ import router from "next/router";
 
 export default function Home({ docs, token }) {
   const createDoc = async () => {
-    console.log("WORKED MF");
     const response = await fetch(`http://localhost:5000/api/docs/`, {
       method: "POST",
       body: JSON.stringify({ name: "Untitled Document" }),
@@ -69,7 +68,15 @@ export default function Home({ docs, token }) {
           </div>
           <div className="grid grid-cols-1 gap-5 mx-8 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {docs.map((doc) => {
-              return <Card text={doc.name} href={doc._id} key={doc._id} />;
+              return (
+                <Card
+                  text={doc.name}
+                  href={doc._id}
+                  key={doc._id}
+                  id={doc._id}
+                  token={token}
+                />
+              );
             })}
           </div>
         </div>
