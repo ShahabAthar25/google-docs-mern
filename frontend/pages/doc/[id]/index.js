@@ -5,14 +5,15 @@ import {
 } from "@heroicons/react/outline";
 import { Button } from "@mui/material";
 import Head from "next/head";
+import TextEditor from "../../../components/TextEditor";
 
 export default function index() {
   return (
-    <div>
+    <div className="bg-[#F8F9Fa] h-screen">
       <Head>
         <title>Untitled - Google Docs Clone</title>
       </Head>
-      <header className="w-screen bg-white border p-2 flex justify-between items-center">
+      <header className="bg-white border p-2 flex justify-between items-center">
         <div className="flex">
           <div className="mr-4">
             <img
@@ -24,7 +25,7 @@ export default function index() {
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl text-gray-500 font-light">Untitled</h1>
-            <div className="space-x-3 flex">
+            <div className="space-x-3 hidden md:flex">
               <p className="text-sm cursor-pointer">File</p>
               <p className="text-sm cursor-pointer">Edit</p>
               <p className="text-sm cursor-pointer">View</p>
@@ -37,14 +38,14 @@ export default function index() {
           </div>
         </div>
         <div className="space-x-4 flex">
-          <Button>
+          <Button className="hidden sm:flex">
             <AnnotationIcon className="h-7 text-black" />
           </Button>
-          <Button variant="outlined" className="rounded-full">
+          <Button variant="outlined" className="rounded-full hidden sm:flex">
             <PresentationChartBarIcon className="h-6" />
             <ChevronDownIcon className="h-4" />
           </Button>
-          <Button variant="contained">
+          <Button variant="contained" className="hidden sm:flex">
             <h1>Share</h1>
           </Button>
           <img
@@ -54,6 +55,11 @@ export default function index() {
           />
         </div>
       </header>
+      <TextEditor />
     </div>
   );
 }
+
+const getServerSideProps = async () => {
+  const responce = await fetch(``);
+};
