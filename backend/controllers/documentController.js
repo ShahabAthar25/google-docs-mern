@@ -45,13 +45,12 @@ const createDocument = async (req, res) => {
 const updateDocument = async (req, res) => {
   try {
     const document = await Document.findById(req.params.id);
-
     if (!document)
       return res.status(404).send({ messgae: "Document does not exist" });
 
     if (document.userId === req.user._id) {
       const documents = await document.updateOne({
-        $set: { name: req.body.name, content: req.bodycontent },
+        $set: req.body,
       });
       res.send({ message: "Document Updated" });
     } else {
@@ -69,7 +68,7 @@ const deleteDocument = async (req, res) => {
     const document = await Document.findById(req.params.id);
 
     if (!document)
-      return res.status(404).send({ messgae: "Document does not exist" });
+      return res.status(404).send({ message: "Document does not exist" });
 
     if (document.userId === req.user._id) {
       const documents = await document.deleteOne();

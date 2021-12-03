@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }) {
           href="https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"
         />
       </Head>
+
       <Component {...pageProps} />
     </>
   );

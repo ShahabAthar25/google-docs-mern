@@ -5,9 +5,9 @@ import {
 } from "@heroicons/react/outline";
 import { Button } from "@mui/material";
 import Head from "next/head";
-import TextEditor from "../../../components/TextEditor";
+import TextEditor from "../../components/TextEditor";
 
-export default function index() {
+export default function index({ post, token }) {
   return (
     <div className="bg-[#F8F9Fa] h-screen">
       <Head>
@@ -55,11 +55,28 @@ export default function index() {
           />
         </div>
       </header>
-      <TextEditor />
+      <TextEditor content={post.content} token={token} />
     </div>
   );
 }
 
-const getServerSideProps = async () => {
-  const responce = await fetch(``);
+export const getServerSideProps = async (context) => {
+  const res = await fetch(
+    `http://localhost:5000/api/docs/${context.params.id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: context.req.cookies.token,
+      },
+    }
+  );
+  const post = await res.json();
+
+  return {
+    props: {
+      post,
+      token: context.req.cookies.token,
+    },
+  };
 };

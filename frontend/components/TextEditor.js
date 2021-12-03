@@ -1,8 +1,15 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/dist/client/router";
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from "draft-js";
+import draftToHtml from "draftjs-to-html";
+
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState } from "draft-js";
-import { convertFromRaw, convertToRaw } from "draft-js";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -11,22 +18,45 @@ const Editor = dynamic(
   }
 );
 
-function TextEditor() {
+function TextEditor({ token, content }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const router = useRouter();
+  const { id } = router.query;
+  useEffect(() => {
+    if (content !== "") {
+      const contentBlock = convertFromHTML(content);
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks,
+        contentBlock.entityMap
+      );
+      const editorState = EditorState.createWithContent(contentState);
 
-  const onEditorStateChange = (state) => {
-    setEditorState(state);
+      setEditorState(editorState);
+    }
+  }, []);
 
-    console.log(editorState);
+  const onEditorStateChange = async (editorState) => {
+    setEditorState(editorState);
+
+    const res = await fetch(`http://localhost:5000/api/docs/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
   };
 
   return (
-    <div className="bg-[#F8F9FA] h-5/7 overflow-y-scroll">
+    <div className="bg-[#F8F9FA] min-h-screen pb-16">
       <Editor
         editorState={editorState}
         onEditorStateChange={onEditorStateChange}
-        toolbarClassName="sticky top-0 z-50 !justify-center mx-auto"
-        editorClassName="max-w-3xl mx-auto bg-white shadow-lg h-5/6"
+        toolbarClassName="flex sticky top-0 z-50 !justify-center mx-auto"
+        editorClassName="mt-6 p-10 bg-white shadow-lg max-w-5xl mx-auto mb-12 border"
       />
     </div>
   );
