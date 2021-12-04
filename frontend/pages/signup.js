@@ -1,15 +1,19 @@
 import { useState } from "react";
 import router, { useRouter } from "next/router";
 import { Button } from "@mui/material";
-import cookie from "js-cookie";
 
 export default function login() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     const res = await fetch(`http://localhost:5000/api/auth/register`, {
       method: "POST",
@@ -25,8 +29,16 @@ export default function login() {
 
     const data = await res.json();
 
+    if (data.message) return setError(data.message);
+
     router.push("/login");
+
+    setLoading(false);
   };
+
+  if (loading)
+    return <div className="h-screen w-screen bg-gray-200 animate-pulse"></div>;
+
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gray-100 flex-col">
       <form className="flex flex-col space-y-8">
@@ -60,6 +72,13 @@ export default function login() {
           Signup
         </Button>
       </form>
+      {error !== "" ? (
+        <>
+          <p className="pt-6 text-base text-red-700">{error}</p>
+        </>
+      ) : (
+        <div></div>
+      )}
       <p className="text-sm text-gray-600 py-6">
         Already have an account?{" "}
         <a href="/login" className="text-blue-700 underline">

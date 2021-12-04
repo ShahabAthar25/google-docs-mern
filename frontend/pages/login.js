@@ -7,6 +7,8 @@ export default function login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,6 +24,8 @@ export default function login() {
     });
 
     const data = await res.json();
+
+    if (data.message) return setError(data.message);
 
     cookie.set("token", data.token);
 
@@ -53,6 +57,13 @@ export default function login() {
           LogIn
         </Button>
       </form>
+      {error !== "" ? (
+        <>
+          <p className="pt-6 text-base text-red-700">{error}</p>
+        </>
+      ) : (
+        <div></div>
+      )}
       <p className="text-sm text-gray-600 py-6">
         Don't have an account?{" "}
         <a href="/signup" className="text-blue-700 underline">

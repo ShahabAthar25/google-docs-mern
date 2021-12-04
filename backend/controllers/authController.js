@@ -8,16 +8,14 @@ const User = require("../models/User");
 const register = async (req, res) => {
   // Validating Request
   const { error } = registerValidation(req.body);
-  if (error) return res.status(400).send({ message: error });
+  if (error) return res.status(400).send({ message: error.details[0].message });
 
   try {
     const userExist = await User.findOne({ username: req.body.username });
-    if (userExist)
-      return res.status(400).send({ message: "Username already exists" });
+    if (userExist) return res.status(400).send("Username already exists");
 
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist)
-      return res.status(400).send({ message: "Email already exists" });
+    if (emailExist) return res.status(400).send("Email already exists");
 
     // genrate hashed password
     const salt = await bcrypt.genSalt(10);
@@ -41,7 +39,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   // Validating Request
   const { error } = loginValidation(req.body);
-  if (error) return res.status(400).send({ message: error });
+  if (error) return res.status(400).send({ message: error.details[0].message });
 
   // checking if email is correct
   const user = await User.findOne({ email: req.body.email });
