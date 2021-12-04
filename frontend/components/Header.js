@@ -6,7 +6,7 @@ import cookie from "js-cookie";
 import router from "next/router";
 import Items from "./Items";
 
-export default function Header() {
+export default function Header({ data }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
@@ -18,8 +18,20 @@ export default function Header() {
     router.push("/login");
   };
 
-  const handleSumit = (e) => {
+  const search = (e) => {
     e.preventDefault();
+
+    const searchWord = e.target.value;
+    setWordEntered(searchWord);
+    const newFilter = data.filter((value) => {
+      return value.name.toLowerCase().includes(searchWord.toLowerCase());
+    });
+
+    if (searchWord === "") {
+      setFilteredData([]);
+    } else {
+      setFilteredData(newFilter);
+    }
   };
 
   return (
@@ -38,10 +50,8 @@ export default function Header() {
         </a>
         <h1 className="text-gray-600 text-2xl hidden md:flex">Docs</h1>
       </div>
-      <form className="flex items-center flex-grow bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md focus-within:bg-white transition">
+      <div className="flex flex-grow relative items-center bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md focus-within:bg-white transition">
         <Button
-          type="submit"
-          onClick={handleSumit}
           className="rounded-full mx-2 sm:mx-4"
           style={{ minWidth: "12px" }}
         >
@@ -51,8 +61,29 @@ export default function Header() {
           type="text"
           placeholder="Search"
           className="flex-grow outline-none bg-transparent w-2"
+          value={wordEntered}
+          onChange={search}
         />
-      </form>
+        <div className="absolute w-max left-5 md:left-20 top-12 bg-white rounded-lg">
+          {filteredData.length != 0 &&
+            filteredData.slice(0, 5).map((value) => {
+              return (
+                <a
+                  key={value._id}
+                  href={`/doc/${value._id}`}
+                  className="max-w-3xl flex items-center cursor-pointer p-2 hover:bg-gray-200 rounded-lg"
+                >
+                  <img
+                    src="https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"
+                    alt=""
+                    className="h-8"
+                  />
+                  <p className="text-sm text-gray-700">{value.name}</p>
+                </a>
+              );
+            })}
+        </div>
+      </div>
       <div className="flex items-center space-x-4">
         <Button className="rounded-full" style={{ minWidth: "12px" }}>
           <img
