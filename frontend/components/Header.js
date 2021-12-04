@@ -21,12 +21,14 @@ export default function Header() {
         <Button className="cursor-pointer hidden sm:flex">
           <MenuIcon className="h-7 text-gray-600" />
         </Button>
-        <img
-          className="h-10"
-          src="https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"
-          alt=""
-          aria-hidden="true"
-        />
+        <a href="/">
+          <img
+            className="h-10"
+            src="https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </a>
         <h1 className="text-gray-600 text-2xl hidden md:flex">Docs</h1>
       </div>
       <div className="flex items-center flex-grow bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md focus-within:bg-white transition">

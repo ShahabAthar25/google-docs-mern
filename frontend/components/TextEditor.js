@@ -26,8 +26,7 @@ function TextEditor({ token, content }) {
     if (content !== "") {
       const contentBlock = convertFromHTML(content);
       const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks,
-        contentBlock.entityMap
+        contentBlock.contentBlocks
       );
       const editorState = EditorState.createWithContent(contentState);
 
