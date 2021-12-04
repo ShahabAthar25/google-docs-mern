@@ -8,9 +8,12 @@ export default function login() {
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     const res = await fetch(`http://localhost:5000/api/auth/login`, {
       method: "POST",
@@ -30,7 +33,13 @@ export default function login() {
     cookie.set("token", data.token);
 
     router.push("/");
+
+    setLoading(false);
   };
+
+  if (loading)
+    return <div className="h-screen w-screen bg-gray-200 animate-pulse"></div>;
+
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gray-100 flex-col">
       <form className="flex flex-col space-y-8">

@@ -7,12 +7,19 @@ import router from "next/router";
 import Items from "./Items";
 
 export default function Header() {
+  const [filteredData, setFilteredData] = useState([]);
+  const [wordEntered, setWordEntered] = useState("");
+
   const [open, setOpen] = useState(false);
 
   const logoutUser = () => {
     cookie.remove("token");
 
     router.push("/login");
+  };
+
+  const handleSumit = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -31,8 +38,10 @@ export default function Header() {
         </a>
         <h1 className="text-gray-600 text-2xl hidden md:flex">Docs</h1>
       </div>
-      <div className="flex items-center flex-grow bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md focus-within:bg-white transition">
+      <form className="flex items-center flex-grow bg-gray-100 mx-5 md:mx-20 rounded-lg py-2 text-gray-700 text-base focus-within:shadow-md focus-within:bg-white transition">
         <Button
+          type="submit"
+          onClick={handleSumit}
           className="rounded-full mx-2 sm:mx-4"
           style={{ minWidth: "12px" }}
         >
@@ -43,7 +52,7 @@ export default function Header() {
           placeholder="Search"
           className="flex-grow outline-none bg-transparent w-2"
         />
-      </div>
+      </form>
       <div className="flex items-center space-x-4">
         <Button className="rounded-full" style={{ minWidth: "12px" }}>
           <img
@@ -65,7 +74,6 @@ export default function Header() {
                 : "hidden"
             }
           >
-            <Items text="Profile" Icon={UserCircleIcon} href="/profile" />
             <Items text="Settings" Icon={CogIcon} href="/settings" />
             <button onClick={logoutUser}>
               <Items text="Logout" Icon={LogoutIcon} />

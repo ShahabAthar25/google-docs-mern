@@ -68,7 +68,7 @@ export default function index({ post, token }) {
               </>
             ) : (
               <button onClick={() => setShow(!show)}>
-                <h1 className="text-2xl text-gray-500 font-light">
+                <h1 className="text-2xl text-gray-500 font-light truncate max-w-xxs sm:max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl">
                   {post.name}
                 </h1>
               </button>
