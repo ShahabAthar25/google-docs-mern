@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
-const Document = require("../models/Document");
 
 const getProfile = async (req, res) => {
   try {
@@ -51,8 +50,13 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const uploadPhoto = async (req, res) => {
+  res.send({ message: "Image updated" });
+};
+
 module.exports = {
   getProfile,
   updateProfile,
   deleteUser,
+  uploadPhoto,
 };

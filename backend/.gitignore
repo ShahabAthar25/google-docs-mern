@@ -103,4 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-docs-shahab-athar-fa0d34cca040.json
+# image upload test file
+image.html
