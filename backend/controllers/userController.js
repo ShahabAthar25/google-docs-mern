@@ -51,7 +51,18 @@ const deleteUser = async (req, res) => {
 };
 
 const uploadPhoto = async (req, res) => {
-  res.send({ message: "Image updated" });
+  try {
+    const user = User.findById(req.params.id);
+
+    if (req.user._id === user._id) {
+      const updatedUser = user.updateOne({ photo: req.file.filename });
+      res.send({ message: "Profile picture  updated" });
+    } else {
+      res.send({ message: "You can only your profile picture" });
+    }
+  } catch (err) {
+    res.send({ message: err });
+  }
 };
 
 module.exports = {

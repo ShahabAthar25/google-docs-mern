@@ -7,6 +7,10 @@ const upload = require("../utils/imageMiddleware");
 router.get("/:id", controller.getProfile);
 router.put("/:id", isAuthenticated, controller.updateProfile);
 router.delete("/:id", isAuthenticated, controller.deleteUser);
-router.post("/:id/photo", upload.single("file"), controller.uploadPhoto);
+router.post(
+  "/:id/photo",
+  [upload.single("file"), isAuthenticated],
+  controller.uploadPhoto
+);
 
 module.exports = router;

@@ -37,7 +37,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/docs", documentRoutes);
 app.use("/api/users", userRoutes);
 
-app.get("/image/:filename", (req, res) => {
+app.get("/api/image/:filename", (req, res) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
@@ -46,8 +46,16 @@ app.get("/image/:filename", (req, res) => {
       });
     }
 
-    const readstream = gfs.createReadStream(file.filename);
-    readstream.pipe(res);
+    if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
+      // Read output to browser
+      const readstream = gfs.createReadStream(file.filename);
+      console.log(req.file);
+      readstream.pipe(res);
+    } else {
+      res.status(404).json({
+        err: "Not an image",
+      });
+    }
   });
 });
 
