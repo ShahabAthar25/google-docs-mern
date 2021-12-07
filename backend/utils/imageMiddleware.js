@@ -14,6 +14,7 @@ var storage = new GridFsStorage({
         if (err) {
           return reject(err);
         }
+
         const filename = buf.toString("hex") + path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
@@ -24,4 +25,17 @@ var storage = new GridFsStorage({
     });
   },
 });
-module.exports = multer({ storage, limits: { fileSize: 50000 } });
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+module.exports = multer({
+  storage,
+  limits: { fileSize: 50000 },
+  fileFilter: fileFilter,
+});

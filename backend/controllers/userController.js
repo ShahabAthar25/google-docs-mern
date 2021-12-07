@@ -52,14 +52,15 @@ const deleteUser = async (req, res) => {
 
 const uploadPhoto = async (req, res) => {
   try {
-    const user = User.findById(req.params.id);
+    const user = await User.findById(req.params.id);
 
-    if (req.user._id === user._id) {
-      const updatedUser = user.updateOne({ photo: req.file.filename });
-      res.send({ message: "Profile picture  updated" });
-    } else {
-      res.send({ message: "You can only your profile picture" });
-    }
+    if (req.user._id !== user._id.toString())
+      return res.send({ message: "You can only your profile picture" });
+
+    const updatedUser = await user.updateOne({
+      profilePic: req.file.filename,
+    });
+    res.send({ message: "Profile picture updated" });
   } catch (err) {
     res.send({ message: err });
   }
