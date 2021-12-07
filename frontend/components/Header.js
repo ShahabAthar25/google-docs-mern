@@ -115,7 +115,7 @@ export default function Header({ data, token }) {
             />
           ) : (
             <UserCircleIcon
-              className="h-7 rounded-full"
+              className="h-10 rounded-full text-gray-600"
               onClick={() => setOpen(!open)}
             />
           )}
