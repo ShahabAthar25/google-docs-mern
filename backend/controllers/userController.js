@@ -2,9 +2,9 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/User");
 
-const getProfile = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user._id);
     res.send(user);
   } catch (err) {
     res.status(500).send({ message: err });
@@ -67,7 +67,7 @@ const uploadPhoto = async (req, res) => {
 };
 
 module.exports = {
-  getProfile,
+  getCurrentUser,
   updateProfile,
   deleteUser,
   uploadPhoto,

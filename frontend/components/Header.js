@@ -1,16 +1,30 @@
 import { MenuIcon, SearchIcon } from "@heroicons/react/solid";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CogIcon, UserCircleIcon, LogoutIcon } from "@heroicons/react/outline";
 import cookie from "js-cookie";
 import router from "next/router";
 import Items from "./Items";
 
-export default function Header({ data }) {
+export default function Header({ data, token }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState([]);
+
+  useEffect(async () => {
+    const res = await fetch(`http://localhost:5000/api/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+    const data = await res.json();
+
+    setUser(data);
+  }, []);
 
   const logoutUser = () => {
     cookie.remove("token");
@@ -93,11 +107,18 @@ export default function Header({ data }) {
           />
         </Button>
         <div className="relative cursor-pointer ml-2">
-          <img
-            src="https://lh3.googleusercontent.com/ogw/ADea4I7FQJJVXJTM9XLAfzJV4v6nm7nHHBOJ13_DWzxf=s32-c-mo"
-            className="h-12 rounded-full"
-            onClick={() => setOpen(!open)}
-          />
+          {user.profilePic !== "" ? (
+            <img
+              src={`http://localhost:5000/api/image/${user.profilePic}`}
+              className="h-12 w-12 rounded-full"
+              onClick={() => setOpen(!open)}
+            />
+          ) : (
+            <UserCircleIcon
+              className="h-7 rounded-full"
+              onClick={() => setOpen(!open)}
+            />
+          )}
           <div
             className={
               open
@@ -115,3 +136,5 @@ export default function Header({ data }) {
     </div>
   );
 }
+
+const getStaticProps = async () => {};

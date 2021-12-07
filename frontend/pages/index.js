@@ -27,7 +27,7 @@ export default function Home({ docs, token }) {
 
   return (
     <div className="pb-8">
-      <Header data={docs} />
+      <Header data={docs} token={token} />
       <section className="bg-gray-100 pb-4">
         <div className="max-w-6xl mx-auto">
           <div className="py-6 flex items-center justify-between mx-8">

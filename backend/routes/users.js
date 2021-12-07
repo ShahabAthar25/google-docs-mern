@@ -4,7 +4,7 @@ const controller = require("../controllers/userController");
 const isAuthenticated = require("../utils/check-auth");
 const upload = require("../utils/imageMiddleware");
 
-router.get("/:id", controller.getProfile);
+router.get("/me", isAuthenticated, controller.getCurrentUser);
 router.put("/:id", isAuthenticated, controller.updateProfile);
 router.delete("/:id", isAuthenticated, controller.deleteUser);
 router.post(
