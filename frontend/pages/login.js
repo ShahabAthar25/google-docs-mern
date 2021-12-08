@@ -28,7 +28,9 @@ export default function login() {
 
     const data = await res.json();
 
-    if (data.message) return setError(data.message);
+    if (data.message) {
+      return setError(data.message), setLoading(false);
+    }
 
     cookie.set("token", data.token);
 

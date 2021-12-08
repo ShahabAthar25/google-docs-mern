@@ -10,8 +10,6 @@ export default function settings({ docs, token }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profilePic, setProfilePic] = useState("");
 
-  const [message, setMessage] = useState("");
-
   const handleUsernameChange = async (e) => {
     e.preventDefault();
 
@@ -27,7 +25,7 @@ export default function settings({ docs, token }) {
     const data = await res.json();
 
     setUsername("");
-    setMessage(data.message);
+    alert(data.message);
   };
 
   const handleEmailChange = async (e) => {
@@ -45,13 +43,13 @@ export default function settings({ docs, token }) {
     const data = await res.json();
 
     setEmail("");
-    setMessage(data.message);
+    alert(data.message);
   };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
 
-    if (confirmPassword !== password) return setMessage("Password must match");
+    if (confirmPassword !== password) return alert("Password must match");
 
     const res = await fetch(`http://localhost:5000/api/users/`, {
       method: "PUT",
@@ -66,7 +64,7 @@ export default function settings({ docs, token }) {
 
     setPassword("");
     setConfirmPassword("");
-    setMessage(data.message);
+    alert(data.message);
   };
 
   const getFile = () => {
@@ -76,17 +74,6 @@ export default function settings({ docs, token }) {
   return (
     <div className="min-h-screen overflow-x-hidden bg-gray-100">
       <Header data={docs} token={token} />
-      {message !== "" ? (
-        <div className="absolute bottom-0 left-0 bg-white shadow-lg p-8 text-gray-600 rounded-lg flex">
-          <h1>{message}</h1>
-          <XIcon
-            className="h-6 text-gray-600 cursor-pointer ml-2"
-            onClick={() => setMessage("")}
-          />
-        </div>
-      ) : (
-        <div></div>
-      )}
       <div className="flex items-center justify-center flex-col w-screen h-full rounded-md">
         <form className="px-4 py-8 my-8 bg-white shadow-lg rounded-md flex flex-col w-4/6">
           <h1 className="text-lg text-gray-600 mb-4 truncate">
@@ -117,7 +104,7 @@ export default function settings({ docs, token }) {
           <button
             type="submit"
             className="hidden"
-            onClick={handleUsernameChange}
+            onClick={handleEmailChange}
           />
         </form>
         <form className="px-4 py-8 my-8 bg-white shadow-lg rounded-md flex flex-col w-4/6 space-y-4">
@@ -139,7 +126,7 @@ export default function settings({ docs, token }) {
           <button
             type="submit"
             className="hidden"
-            onClick={handleUsernameChange}
+            onClick={handlePasswordChange}
           />
         </form>
         <form className="px-4 py-8 my-8 bg-white shadow-lg rounded-md flex flex-col w-4/6 space-y-4">
