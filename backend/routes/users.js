@@ -5,8 +5,8 @@ const isAuthenticated = require("../utils/check-auth");
 const upload = require("../utils/imageMiddleware");
 
 router.get("/me", isAuthenticated, controller.getCurrentUser);
-router.put("/:id", isAuthenticated, controller.updateProfile);
-router.delete("/:id", isAuthenticated, controller.deleteUser);
+router.put("/", isAuthenticated, controller.updateProfile);
+router.delete("/", isAuthenticated, controller.deleteUser);
 router.post(
   "/:id/photo",
   [upload.single("file"), isAuthenticated],
