@@ -7,10 +7,11 @@ import {
   ServerIcon,
 } from "@heroicons/react/outline";
 import Card from "../components/Card";
-import router from "next/router";
-import cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 export default function Home({ docs, token }) {
+  const router = useRouter();
+
   const createDoc = async () => {
     const response = await fetch(
       `https://google-docs-mern.herokuapp.com/api/docs/`,

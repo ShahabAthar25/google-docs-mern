@@ -1,7 +1,4 @@
-import { Button } from "@mui/material";
 import { useState } from "react";
-import { useRouter } from "next/router";
-import FileBase from "react-file-base64";
 import Header from "../components/Header";
 
 export default function settings({ docs, token }) {
@@ -10,8 +7,6 @@ export default function settings({ docs, token }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [imageURL, setImageURL] = useState("");
-
-  const router = useRouter();
 
   const handleUsernameChange = async (e) => {
     e.preventDefault();
@@ -97,7 +92,7 @@ export default function settings({ docs, token }) {
     const data = await res.json();
 
     setImageURL("");
-    router.push("/settings");
+    alert(data.message);
   };
 
   return (
