@@ -14,13 +14,16 @@ export default function Header({ data, token }) {
   const [user, setUser] = useState([]);
 
   useEffect(async () => {
-    const res = await fetch(`http://localhost:5000/api/users/me`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/users/me`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
     const data = await res.json();
 
     setUser(data);
@@ -109,7 +112,7 @@ export default function Header({ data, token }) {
         <div className="relative cursor-pointer ml-2">
           {user.profilePic !== "" ? (
             <img
-              src={`http://localhost:5000/api/image/${user.profilePic}`}
+              src={user.profilePic}
               className="h-12 w-12 rounded-full"
               onClick={() => setOpen(!open)}
             />
@@ -136,5 +139,3 @@ export default function Header({ data, token }) {
     </div>
   );
 }
-
-const getStaticProps = async () => {};

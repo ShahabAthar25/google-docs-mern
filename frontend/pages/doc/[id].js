@@ -19,16 +19,19 @@ export default function index({ post, token }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:5000/api/docs/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        name: input,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/docs/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          name: input,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     setShow(!show);
 
@@ -110,7 +113,7 @@ export default function index({ post, token }) {
 
 export const getServerSideProps = async (context) => {
   const res = await fetch(
-    `http://localhost:5000/api/docs/${context.params.id}`,
+    `https://google-docs-mern.herokuapp.com/api/docs/${context.params.id}`,
     {
       method: "GET",
       headers: {

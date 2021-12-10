@@ -37,16 +37,19 @@ function TextEditor({ token, content }) {
   const onEditorStateChange = async (editorState) => {
     setEditorState(editorState);
 
-    const res = await fetch(`http://localhost:5000/api/docs/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/docs/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
   };
 
   return (

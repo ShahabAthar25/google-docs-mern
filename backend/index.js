@@ -27,10 +27,10 @@ mongoose.connect(
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use(cors());
 app.use(morgan("common"));
 
 app.use("/api/auth", authRoutes);

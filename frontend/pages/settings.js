@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
-import { XIcon } from "@heroicons/react/outline";
+import { useRouter } from "next/router";
+import FileBase from "react-file-base64";
 import Header from "../components/Header";
 
 export default function settings({ docs, token }) {
@@ -8,19 +9,24 @@ export default function settings({ docs, token }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const [imageURL, setImageURL] = useState("");
+
+  const router = useRouter();
 
   const handleUsernameChange = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:5000/api/users/`, {
-      method: "PUT",
-      body: JSON.stringify({ username }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/users/`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ username }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     const data = await res.json();
 
@@ -31,14 +37,17 @@ export default function settings({ docs, token }) {
   const handleEmailChange = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:5000/api/users/`, {
-      method: "PUT",
-      body: JSON.stringify({ email }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/users/`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     const data = await res.json();
 
@@ -51,14 +60,17 @@ export default function settings({ docs, token }) {
 
     if (confirmPassword !== password) return alert("Password must match");
 
-    const res = await fetch(`http://localhost:5000/api/users/`, {
-      method: "PUT",
-      body: JSON.stringify({ password }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/users/`,
+      {
+        method: "PUT",
+        body: JSON.stringify({ password }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     const data = await res.json();
 
@@ -67,8 +79,25 @@ export default function settings({ docs, token }) {
     alert(data.message);
   };
 
-  const getFile = () => {
-    document.getElementById("selectFile").click();
+  const uploadImage = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/users/photo`,
+      {
+        method: "POST",
+        body: JSON.stringify({ url: imageURL }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    setImageURL("");
+    router.push("/settings");
   };
 
   return (
@@ -110,14 +139,14 @@ export default function settings({ docs, token }) {
         <form className="px-4 py-8 my-8 bg-white shadow-lg rounded-md flex flex-col w-4/6 space-y-4">
           <h1 className="text-lg text-gray-600 truncate">Change Password</h1>
           <input
-            type="text"
+            type="password"
             placeholder="New Password"
             className="outline-none border p-2 rounded-md flex-grow"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            type="text"
+            type="password"
             placeholder="Confirm Password"
             className="outline-none border p-2 rounded-md flex-grow"
             value={confirmPassword}
@@ -133,27 +162,14 @@ export default function settings({ docs, token }) {
           <h1 className="text-lg text-gray-600 truncate">
             Change Profile Picture
           </h1>
-          <Button
-            variant="text"
-            className="outline-none border p-2 rounded-md flex-grow bg-transparent border-dotted"
-            onClick={getFile}
-          >
-            Select Image
-          </Button>
           <input
-            id="selectFile"
-            type="file"
-            className="hidden"
-            onChange={(e) => setProfilePic(e.target.files)}
+            type="text"
+            placeholder="Enter Image Url"
+            className="outline-none border p-2 rounded-md flex-grow"
+            value={imageURL}
+            onChange={(e) => setImageURL(e.target.value)}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            onClick={handleUsernameChange}
-            className="max-w-xs"
-          >
-            Update profile picture
-          </Button>
+          <button type="submit" onClick={uploadImage} />
         </form>
       </div>
     </div>
@@ -161,13 +177,16 @@ export default function settings({ docs, token }) {
 }
 
 export async function getServerSideProps(context) {
-  const response = await fetch(`http://localhost:5000/api/docs/user/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: context.req.cookies.token,
-    },
-  });
+  const response = await fetch(
+    `https://google-docs-mern.herokuapp.com/api/docs/user/me`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: context.req.cookies.token,
+      },
+    }
+  );
   const docs = await response.json();
 
   return {

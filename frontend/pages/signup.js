@@ -8,38 +8,33 @@ export default function login() {
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-
-    const res = await fetch(`http://localhost:5000/api/auth/register`, {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/auth/register`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const data = await res.json();
 
     if (data.message) {
-      return setError(data.message), setLoading(false);
+      return setError(data.message);
     }
 
     router.push("/login");
-
-    setLoading(false);
   };
-
-  if (loading)
-    return <div className="h-screen w-screen bg-gray-200 animate-pulse"></div>;
 
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-gray-100 flex-col">

@@ -17,7 +17,7 @@ const updateProfile = async (req, res) => {
     req.body.password = await bcrypt.hash(req.body.password, salt);
   }
   try {
-    const updatedUser = await User.findOneAndUpdate(req.user._id, {
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
       $set: req.body,
     });
     res.send({ message: "User has been updated" });
@@ -36,16 +36,13 @@ const deleteUser = async (req, res) => {
 };
 
 const uploadPhoto = async (req, res) => {
+  console.log(req.user._id);
+
   try {
-    const user = await User.findById(req.params.id);
-
-    if (req.user._id !== user._id.toString())
-      return res.send({ message: "You can only your profile picture" });
-
-    const updatedUser = await user.updateOne({
-      profilePic: req.file.filename,
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+      profilePic: req.body.url,
     });
-    res.send({ message: "Profile picture updated" });
+    res.send(updatedUser);
   } catch (err) {
     res.send({ message: err });
   }

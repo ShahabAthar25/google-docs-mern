@@ -12,13 +12,16 @@ export default function Card({ text, href, id, token }) {
   const [open, setOpen] = useState(false);
 
   const deleteDoc = async () => {
-    const response = await fetch(`http://localhost:5000/api/docs/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const response = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/docs/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     setOpen(false);
 

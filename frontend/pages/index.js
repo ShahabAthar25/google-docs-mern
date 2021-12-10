@@ -8,17 +8,21 @@ import {
 } from "@heroicons/react/outline";
 import Card from "../components/Card";
 import router from "next/router";
+import cookies from "js-cookie";
 
 export default function Home({ docs, token }) {
   const createDoc = async () => {
-    const response = await fetch(`http://localhost:5000/api/docs/`, {
-      method: "POST",
-      body: JSON.stringify({ name: "Untitled Document" }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const response = await fetch(
+      `https://google-docs-mern.herokuapp.com/api/docs/`,
+      {
+        method: "POST",
+        body: JSON.stringify({ name: "Untitled Document" }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -86,13 +90,16 @@ export default function Home({ docs, token }) {
 }
 
 export async function getServerSideProps(context) {
-  const response = await fetch(`http://localhost:5000/api/docs/user/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: context.req.cookies.token,
-    },
-  });
+  const response = await fetch(
+    `https://google-docs-mern.herokuapp.com/api/docs/user/me`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: context.req.cookies.token,
+      },
+    }
+  );
   const docs = await response.json();
 
   return {
